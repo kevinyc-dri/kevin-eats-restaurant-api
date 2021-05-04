@@ -14,18 +14,23 @@ function App() {
 
   function handleSubmit(event) {
     console.log(allRestaurants)
-    console.log(event)
     event.preventDefault();
 
     const newRestaurant = {
-      address: "301 N University Dr, Pembroke Pines, FL 33024",
+      name: {text},
+      address: 'her house',
+      rating: 6,
     }
 
-    fetch('https://bocacode-intranet-api.web.app/restaurants')
-
-    console.log('here is our text 2222')
-
-  }
+    fetch('https://bocacode-intranet-api.web.app/restaurants', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newRestaurant),
+    }).then(response => response.json())
+    .then(status => console.log(status))
+    }
 
   return (
     <div className="App">
