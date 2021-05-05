@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import './App.css';
 
+import Header from './components/Header'
+import Footer from './components/Footer'
+import AddNewForm from './components/AddNewForm';
+import SingleRestaurant from './components/SingleRestaurant'
+
 function App() {
   const [allRestaurants, setAllRestaurants] = useState()
-  const [text, setText] = useState('text should render here')
 
   useEffect(() => {
     fetch('https://bocacode-intranet-api.web.app/restaurants')
@@ -12,57 +16,22 @@ function App() {
       .catch(err => console.log(err))
   }, [])
 
-  function handleSubmit(event) {
-    console.log(allRestaurants)
-    event.preventDefault();
-
-    const newRestaurant = {
-      name: {text},
-      address: 'her house',
-      rating: 6,
-    }
-
-    fetch('https://bocacode-intranet-api.web.app/restaurants', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newRestaurant),
-    }).then(response => response.json())
-    .then(status => console.log(status))
-    }
-
   return (
-    <div className="App">
-      <form action="">
-        <label htmlFor="">
-          <input
-            type="text"
-            onChange={event => setText(event.target.value)}
-            value={text} />
-        </label>
-        <button onClick={event => handleSubmit(event)}>go here</button>
-      </form>
-      <span>{text}</span>
-
-      {!allRestaurants ? <p>Loading...</p> : allRestaurants.map(restaurant => {
-        return (
-          <div className="App" key={restaurant.id}>
-            <h2>{restaurant.name}</h2>
-            <span>{restaurant.address}</span>
-            <span>{restaurant.cuisine}</span>
-            <span>{restaurant.rating}</span>
-            <img
-              alt={`The awesome ${restaurant.name}`}
-              src={restaurant.photoUrl}
-              style={{ maxWidth: '300px', padding: '12px' }}
-            />
-          </div>
-        )
-      })}
-
-    </div>
-  );
+    <>
+      <Header />
+      <div className="App">
+        <AddNewForm />
+        <div className='App-card-container' style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap', width: '100%', margin: '3rem 0' }}>
+          {!allRestaurants ? <p>Loading...</p> : allRestaurants.map(restaurant => {
+            return (
+              <SingleRestaurant restaurant={restaurant} areWeCool={true} />
+            )
+          })}
+        </div>
+        <Footer />
+      </div>
+    </>
+  )
 }
 
 export default App;
